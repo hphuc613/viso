@@ -1,0 +1,23 @@
+@import 'mixins';
+@import 'main_setting';
+//Icons
+@import "../node_modules/bootstrap-icons/font/bootstrap-icons.css";
+
+.back-to-top {
+    height: 3.3rem;
+    width: 3.3rem;
+    background-color: black;
+    border-color: black;
+    border-radius: 50%;
+    color: white;
+    padding: 1rem 0;
+    position: fixed;
+    right: 2rem;
+    bottom: 1rem;
+    display: none;
+    z-index: 999;
+
+    @include mobile {
+        display: none !important;
+    }
+}
