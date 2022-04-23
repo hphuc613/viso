@@ -11,15 +11,22 @@ class UpdateOrdersTable extends Migration {
      * @return void
      */
     public function up() {
-        Schema::table('orders', function (Blueprint $table) {
-            $table->unsignedBigInteger('member_id')->nullable()->change();
-            $table->string('member_last_name')->nullable()->after('member_name');
-            $table->string('shipping_id')->nullable()->after('phone');
-            $table->string('shipping_name')->nullable()->after('shipping_id');
-            $table->string('shipping_price')->nullable()->after('shipping_name');
-            $table->dropColumn('creator_id');
-            $table->dropColumn('creator_name');
-        });
+        try{
+            Schema::table('orders', function (Blueprint $table) {
+                $table->unsignedBigInteger('member_id')->nullable()->change();
+                $table->string('member_last_name')->nullable()->after('member_name');
+                $table->string('shipping_id')->nullable()->after('phone');
+                $table->string('shipping_name')->nullable()->after('shipping_id');
+                $table->string('shipping_price')->nullable()->after('shipping_name');
+                $table->dropColumn('creator_id');
+                $table->dropColumn('creator_name');
+            });
+        }catch(Exception $e){
+            Schema::table('orders', function (Blueprint $table) {
+                $table->dropColumn('creator_id');
+                $table->dropColumn('creator_name');
+            });
+        }
     }
 
     /**

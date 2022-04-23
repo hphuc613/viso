@@ -25,6 +25,11 @@
                             <div class="tab-content">
                                 <div class="tab-pane fade show py-3 py-sm-4 active" id="tab-form" role="tabpanel"
                                      aria-labelledby="login-tab">
+                                    @if(session('danger'))
+                                        <div class="alert alert-danger" role="alert">
+                                            {{ session('danger') }}
+                                        </div>
+                                    @endif
                                     @include('Auth::frontend._form_login')
                                 </div>
                             </div>

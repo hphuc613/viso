@@ -54,15 +54,27 @@ class AuthMemberController extends Controller{
             session()->put('login', ['email' => $credentials['email']]);
 
             if($this->auth->attempt($credentials, $request->has('remember_me'))){
-                if($this->auth->user()->status != Status::STATUS_ACTIVE || empty($this->auth->user()->email_verified_at)){
+                if($this->auth->user()->status !== Status::STATUS_ACTIVE){
                     $request->session()->flash('danger',
-                        trans('Your account is not verified or inactive. Please contact with admin page to get more information.'));
+                        trans('Your account is not inactive. Please contact with admin page to get more information.'));
                     $this->auth->logout();
-                }else{
-                    $request->session()->flash('success', trans('Logged In Successfully!'));
-
-                    return redirect()->route('get.home.index');
                 }
+                if(empty($this->auth->user()->email_verified_at)){
+                    $data               = Member::query()->find($this->auth->id());
+                    $data->username     = Str::random(8);
+                    $data->contact_info = Str::random(21);
+                    $this->sendMail($data, $data->email);
+                    $request->session()->flash('danger',
+                        trans('Your account is not verified. Please contact with admin page to get more information.'));
+
+                    $this->auth->logout();
+
+                    return redirect()->back();
+                }
+
+                $request->session()->flash('success', trans('Logged In Successfully!'));
+
+                return redirect()->route('get.home.index');
             }else{
                 $request->session()->flash('danger', trans('Incorrect username or password'));
             }
@@ -94,10 +106,20 @@ class AuthMemberController extends Controller{
         $data               = new Member($data);
         $data->username     = Str::random(8);
         $data->contact_info = Str::random(21);
+        $this->sendMail($data, $request);
 
+        return ['status' => 200];
+    }
+
+    /**
+     * @param $data
+     * @param $request
+     * @return array|bool
+     */
+    public function sendMail($data, $email){
         try{
             $data->save();
-            $mail_to = $request->email;
+            $mail_to = $email;
             $subject = 'Verify account';
             $title   = 'Verify account';
             $body    = '<p>' . trans('Please click the button below to verify') . '</p>';
@@ -108,7 +130,7 @@ class AuthMemberController extends Controller{
             return ['status' => 400, 'msg' => trans('Something went wrong!')];
         }
 
-        return ['status' => 200];
+        return true;
     }
 
     /**
