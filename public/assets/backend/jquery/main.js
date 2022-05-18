@@ -1,3 +1,19 @@
+
+$(document).on('click', '.pagination-index ul.pagination li a', function (e) {
+    e.preventDefault();
+    let url = $(this).attr('href');
+    if (url !== 'javascript:'){
+        let listing = $(document).find('.listing');
+        $.ajax({
+            url: url,
+            method: "GET"
+        }).done(function (response) {
+            let html = $(response).find(".listing").html();
+            listing.html(html);
+        })
+    }
+});
+
 /***** Action Clear Search *****/
 $(document).on('click', 'button.clear', function (event) {
     event.preventDefault();

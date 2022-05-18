@@ -34,14 +34,13 @@ class ProductController extends Controller{
      * @return Factory|View
      */
     public function index(Request $request){
-        $filter     = $request->all();
         $categories = ProductCategory::getArray();
         $brands     = ProductBrand::getArray();
         $statuses   = Status::getStatuses();
-        $data       = Product::filter($filter)->orderBy("name")->paginate(20);
+        $data       = Product::filter($request->all())->orderBy("name")->paginate(20);
         $stores     = Store::getArray();
 
-        return view("Product::backend.product.index", compact("data", "stores", "categories", "brands", "statuses", "filter"));
+        return view("Product::backend.product.index", compact("data", "stores", "categories", "brands", "statuses"));
     }
 
     /**

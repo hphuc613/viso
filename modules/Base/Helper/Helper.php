@@ -155,31 +155,35 @@ if(!function_exists('segmentUrl')){
      * @param $index
      * @return mixed
      */
-    function segmentUrl($index){
-        return request()->segments()[$index] ?? '/';
-    }
-
-    if(!function_exists('summaryListing')){
-        /**
-         * @param $data
-         * @return string|null
-         */
-        function summaryListing($data){
-            $html = '';
-            $html .= '<span class="listing-information">';
-            $html .= trans('Showing');
-            $html .= '<b> ';
-            $html .= (count($data) > 0) ? ($data->currentpage() - 1) * $data->perpage() + 1 : 0;
-            $html .= '</b> ';
-            $html .= trans(' to ');
-            $html .= '<b> ';
-            $html .= ($data->currentpage() - 1) * $data->perpage() + $data->count();
-            $html .= ' </b>';
-            $html .= trans(' of ');
-            $html .= '<b>' . $data->total() . '</b> ' . trans('entries') . '</span>';
-
-            return $html;
+    function segmentUrl($index = null){
+        if(!empty(null) && is_numeric($index)){
+            return request()->segments()[$index] ?? '/';
         }
+
+        return request()->segments();
+    }
+}
+
+if(!function_exists('summaryListing')){
+    /**
+     * @param $data
+     * @return string|null
+     */
+    function summaryListing($data){
+        $html = '';
+        $html .= '<span class="listing-information">';
+        $html .= trans('Showing');
+        $html .= '<b> ';
+        $html .= (count($data) > 0) ? ($data->currentpage() - 1) * $data->perpage() + 1 : 0;
+        $html .= '</b> ';
+        $html .= trans(' to ');
+        $html .= '<b> ';
+        $html .= ($data->currentpage() - 1) * $data->perpage() + $data->count();
+        $html .= ' </b>';
+        $html .= trans(' of ');
+        $html .= '<b>' . $data->total() . '</b> ' . trans('entries') . '</span>';
+
+        return $html;
     }
 }
 
@@ -234,7 +238,7 @@ if(!function_exists('menu_frontend')){
         $arr  = [];
         $arr2 = [];
         foreach($menu as $item){
-            $arr[$item->store_id][$item->cate_id][] = $item->brand_id;
+            $arr[$item->store_id][$item->cate_id][]                                         = $item->brand_id;
             $arr2[$item->store->name][$item->category->name . '(' . $item->cate_id . ')'][] = $item->brand->name . '(' . $item->brand_id . ')';
         }
         dd($arr2);

@@ -1,5 +1,5 @@
 @extends("Base::backend.master")
-
+@php($filter = request())
 @section("content")
     <div id="member-module">
         <div class="row page-titles">
@@ -34,27 +34,21 @@
                         <div class="col-md-3 form-group">
                             <label for="name">{{ trans("Client name") }}</label>
                             <input type="text" class="form-control" id="name" name="name"
-                                   value="{{ $filter['name'] ?? null }}">
+                                   value="{{ $filter->name }}">
                         </div>
                         <div class="col-md-3 form-group">
                             <label for="phone">{{ trans("Phone Number") }}</label>
                             <input type="text" class="form-control" id="phone" name="phone"
-                                   value="{{ $filter['phone'] ?? null }}">
+                                   value="{{ $filter->phone }}">
                         </div>
                         <div class="col-md-3 form-group">
                             <label for="email">{{ trans("Email") }}</label>
                             <input type="text" class="form-control" id="text-input" name="email"
-                                   value="{{ $filter['email'] ?? null }}">
+                                   value="{{ $filter->email }}">
                         </div>
                         <div class="col-md-3 form-group">
                             <label for="status">{{ trans('Status') }}</label>
-                            <select name="status" id="status" class="select2 form-control">
-                                <option value="">{{ trans('All') }}</option>
-                                @foreach($statuses as $key => $status)
-                                    <option value="{{ $key }}"
-                                            @if(isset($filter['status']) && $filter['status'] == $key) selected @endif>{{ $status }}</option>
-                                @endforeach
-                            </select>
+                            {!! Form::select('status', ['' => 'All'] + $statuses, $filter->status ?? NULL, ['class' => 'select2 form-control']) !!}
                         </div>
                     </div>
                     <div class="input-group">
@@ -108,7 +102,7 @@
                         @endforeach
                         </tbody>
                     </table>
-                    <div class="mt-5 pagination-style">
+                    <div class="mt-5 pagination-style pagination-index">
                         {{ $members->withQueryString()->render('vendor.pagination.default') }}
                     </div>
                 </div>

@@ -83,7 +83,7 @@
                         @endforeach
                         </tbody>
                     </table>
-                    <div class="mt-5 pagination-style">
+                    <div class="mt-5 pagination-style pagination-index">
                         {{ $data->withQueryString()->render("vendor/pagination/default") }}
                     </div>
                 </div>

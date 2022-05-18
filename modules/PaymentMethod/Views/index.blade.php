@@ -1,5 +1,5 @@
 @extends("Base::backend.master")
-
+@php($filter = request())
 @section("content")
     <div id="paymentmethod-module">
         <div class="row page-titles">
@@ -36,7 +36,7 @@
                             <div class="form-group">
                                 <label for="text-input">{{ trans("Payment Method Name") }}</label>
                                 <input type="text" class="form-control" id="text-input" name="name"
-                                       value="{{ $filter['name'] ?? NULL }}">
+                                       value="{{ $filter->name }}">
                             </div>
                         </div>
                     </div>
@@ -90,7 +90,7 @@
                         @endforeach
                         </tbody>
                     </table>
-                    <div class="mt-5 pagination-style">
+                    <div class="mt-5  pagination-style pagination-index">
                         {{ $data->withQueryString()->render("vendor/pagination/default") }}
                     </div>
                 </div>

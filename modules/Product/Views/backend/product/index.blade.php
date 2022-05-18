@@ -16,19 +16,25 @@
             </div>
         </div>
         <div class="mb-3 d-flex justify-content-end group-btn">
-            <div class="btn-group">
-                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="false">
-                    <i class="fa fa-plus"></i> {{ trans("Add New") }}
-                </button>
-                <div class="dropdown-menu">
-                    @foreach($stores as $key => $store)
-                        <a href="{{ route('get.product.create', ['store_id' => $key]) }}" class="dropdown-item">
-                            {{ $store }}
-                        </a>
-                    @endforeach
+            @if(count($stores) > 1)
+                <div class="btn-group">
+                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
+                        <i class="fa fa-plus"></i> {{ trans("Add New") }}
+                    </button>
+                    <div class="dropdown-menu">
+                        @foreach($stores as $key => $store)
+                            <a href="{{ route('get.product.create', ['store_id' => $key]) }}" class="dropdown-item">
+                                {{ $store }}
+                            </a>
+                        @endforeach
+                    </div>
                 </div>
-            </div>
+            @else
+                <a href="{{ route('get.product.create') }}" class="btn btn-primary">
+                    {{ trans("Add New") }}
+                </a>
+            @endif
         </div>
     </div>
     <!--Search box-->
@@ -154,7 +160,7 @@
                         @endforeach
                         </tbody>
                     </table>
-                    <div class="mt-5 pagination-style">
+                    <div class="mt-5  pagination-style pagination-index">
                         {{ $data->withQueryString()->render('vendor/pagination/default') }}
                     </div>
                 </div>

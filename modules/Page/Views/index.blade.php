@@ -1,7 +1,7 @@
 @extends("Base::backend.master")
-
+@php($prompt = ['' => trans('All')])
+@php($filter = request())
 @section("content")
-    @php($prompt = ['' => trans('All')])
     <div id="page-module">
         <div class="row page-titles">
             <div class="col-md-5 align-self-center">
@@ -36,25 +36,25 @@
                             <div class="form-group">
                                 <label for="name">{{ trans("Name") }}</label>
                                 <input type="text" class="form-control" id="name" name="name"
-                                       value="{{ $filter['name'] ?? NULL }}">
+                                       value="{{ $filter->name }}">
                             </div>
                         </div>
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label for="text-input">{{ trans('Page') }}</label>
-                                {!! Form::select('page_id', $prompt + $page_list, $filter['page_id'] ?? NULL, ['class' => 'select2 form-control']) !!}
+                                {!! Form::select('page_id', $prompt + $page_list, $filter->page_id, ['class' => 'select2 form-control']) !!}
                             </div>
                         </div>
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label for="text-input">{{ trans('Author') }}</label>
-                                {!! Form::select('created_by', $prompt + $authors, $filter['created_by'] ?? NULL, ['class' => 'select2 form-control']) !!}
+                                {!! Form::select('created_by', $prompt + $authors, $filter->created_by, ['class' => 'select2 form-control']) !!}
                             </div>
                         </div>
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label for="text-input">{{ trans('Status') }}</label>
-                                {!! Form::select('status', $prompt + $statuses, $filter['status'] ?? NULL, ['class' => 'select2 form-control']) !!}
+                                {!! Form::select('status', $prompt + $statuses, $filter->status, ['class' => 'select2 form-control']) !!}
                             </div>
                         </div>
                     </div>
@@ -108,7 +108,7 @@
                                 <?php
                                 $status = $statuses[$item->status] ?? null;
                                 $color = 'text-danger';
-                                if ($item->status == Modules\Base\Models\Status::STATUS_ACTIVE) {
+                                if($item->status == Modules\Base\Models\Status::STATUS_ACTIVE){
                                     $color = 'text-success';
                                 }
                                 ?>
@@ -141,7 +141,7 @@
                         @endforeach
                         </tbody>
                     </table>
-                    <div class="mt-5 pagination-style">
+                    <div class="mt-5 pagination-style pagination-index">
                         {{ $data->withQueryString()->render("vendor/pagination/default") }}
                     </div>
                 </div>

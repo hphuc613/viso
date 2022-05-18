@@ -28,14 +28,13 @@ class StoreController extends Controller{
      * @return Factory|View
      */
     public function index(Request $request){
-        $filter = $request->all();
         $data   = Store::query();
         if(isset($request->name)){
             $data = $data->where('name', 'LIKE', '%' . $request->name . '%');
         }
         $data = $data->orderBy("name")->paginate(20);
 
-        return view("Store::store.index", compact("data", 'filter'));
+        return view("Store::index", compact("data"));
     }
 
     /**
@@ -45,7 +44,7 @@ class StoreController extends Controller{
     public function getCreate(Request $request){
         $statuses = Status::getStatuses();
 
-        return view("Store::store.form", compact("statuses"));
+        return view("Store::form", compact("statuses"));
     }
 
     /**
@@ -67,7 +66,7 @@ class StoreController extends Controller{
     public function getUpdate(Request $request, $id){
         $statuses = Status::getStatuses();
         $data     = Store::query()->find($id);
-        return view("Store::store.form", compact("data", "statuses"));
+        return view("Store::form", compact("data", "statuses"));
     }
 
     /**

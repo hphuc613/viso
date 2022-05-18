@@ -36,10 +36,9 @@ class MemberController extends BaseController
      */
     public function index(Request $request)
     {
-        $filter = $request->all();
         $statuses = Status::getStatuses();
-        $members = Member::filter($filter)->orderBy('name')->paginate(15);
-        return view("Member::backend.index", compact('members', 'filter', 'statuses'));
+        $members = Member::filter($request->all())->orderBy('name')->paginate(15);
+        return view("Member::backend.index", compact('members', 'statuses'));
     }
 
     /**

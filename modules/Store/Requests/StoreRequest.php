@@ -21,20 +21,17 @@ class StoreRequest extends FormRequest{
      */
     public function rules(){
         $method = segmentUrl(2);
-        switch($method){
-            default:
-                return [
-                    'name'   => 'required|validate_unique:stores',
-                    'status' => 'required'
-                ];
-                break;
-            case "update":
-                return [
-                    'name'   => 'required|validate_unique:stores,' . $this->id,
-                    'status' => 'required',
-                ];
-                break;
+        if($method == "update"){
+            return [
+                'name'   => 'required|validate_unique:stores,' . $this->id,
+                'status' => 'required',
+            ];
         }
+
+        return [
+            'name'   => 'required|validate_unique:stores',
+            'status' => 'required'
+        ];
     }
 
     public function messages() {

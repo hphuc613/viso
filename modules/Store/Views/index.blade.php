@@ -1,5 +1,5 @@
 @extends("Base::backend.master")
-
+@php($filter = request())
 @section("content")
     <div id="store-module">
         <div class="row page-titles">
@@ -34,7 +34,7 @@
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label for="text-input">{{ trans("Store name") }}</label>
-                                <input type="text" class="form-control" id="text-input" name="name" value="">
+                                <input type="text" class="form-control" id="text-input" name="name" value="{{ $filter->name }}">
                             </div>
                         </div>
                     </div>
@@ -86,7 +86,7 @@
                         @endforeach
                         </tbody>
                     </table>
-                    <div class="mt-5 pagination-style">
+                    <div class="mt-5 pagination-style pagination-index">
                         {{ $data->withQueryString()->render("vendor/pagination/default") }}
                     </div>
                 </div>

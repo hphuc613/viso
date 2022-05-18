@@ -27,7 +27,6 @@ class PaymentMethodController extends Controller{
      * @return Factory|View
      */
     public function index(Request $request){
-        $filter = $request->all();
         $data   = PaymentMethod::query();
         if(isset($request->name)){
             $data = $data->where('name', 'LIKE', '%' . $request->name . '%');
@@ -36,7 +35,7 @@ class PaymentMethodController extends Controller{
 
         $data = $data->orderBy("name")->paginate(20);
 
-        return view("PaymentMethod::index", compact("data", "filter", "type"));
+        return view("PaymentMethod::index", compact("data", "type"));
     }
 
     /**
