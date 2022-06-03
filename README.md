@@ -42,7 +42,7 @@ IX. Make migration in module:
         php artisan module:migration {migration_name} {--create=migration_name} {--tablemigration_name} {module}
         
 X. Storage link:
-        Step 1: Create upload folder in storage/app 
+        Step 1: Create upload folder in storage/app/public
         Step 2: Run command
         
             php artisan storage:link
